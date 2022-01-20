@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block css %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    {% endblock css %}
+{% block title %}
+Patient Booking
+{% endblock title %}
+{% block body %}
+<div class="container mt-3">
+<div class="row">
+
+<div class="col md-5">
+
+    <div class="card" style="width: 45rem;">
+        <img src="static/img/departments-1.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">HOSPITAL DOCTORS</h5>
+          <p class="card-text">Doctors Names</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">An item</li>
+          <li class="list-group-item">A second item</li>
+          <li class="list-group-item">A third item</li>
+        </ul>
+        <div class="card-body">
+          <a href="#" class="card-link">Contact Us</a>
+          <a href="#" class="card-link">About Us</a>
+        </div>
+      </div>
+
+</div>
+<div class="col md-5 jumbotron">
+    <h4 class="text-center bg-dark text-white">Book Your Slot</h4>
+    <br>
+    {% with messages=get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+
+    
+    
+    <div class="alert alert-{{category}} alert-dismissible  show"
+    role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        
+       
+    
+      </button>
+    
+    </div>
+    
+    
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+<form action="/patients" method="post" class="jumbotron">
+    <div class="form-group">
+        
+        <input type="email" class="form-control" id="email" name="email" value={{current_user.email}} Required>
+        
+      </div>
+     
+      <div class="form-group">
+        
+        <input type="text" class="form-control" id="name" name="name" placeholder="Full Name" Required >
+        
+      </div>
+      
+      <div class="form-group">
+
+        <select class="form-control" id="gender" name="gender" required>
+            <option selected>Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Others">Others</option>
+          </select>
+      </div>
+     
+      <div class="form-group">
+
+        <select class="form-control" id="slot" name="slot" required>
+            <option selected>Slot</option>
+            <option value="Morning">Morning</option>
+            <option value="Evening">Evening</option>
+            <option value="Night">Night</option>
+          </select>
+      </div>
+      
+      <div class="form-group">
+        
+        <input type="time" class="form-control" id="time" name="time" placeholder="Time" Required >
+        
+      </div>
+      
+      <div class="form-group">
+        
+        <input type="date" class="form-control" id="date" name="date" placeholder="Date" Required >
+        
+      </div>
+      
+      <div class="form-group">
+        
+        <input type="text" class="form-control" id="disease" name="disease" placeholder="Disease" Required >
+        
+      </div>
+      
+      <div class="form-group">
+
+        <select class="form-control" id="dept" name="dept" required>
+            <option selected>Select Doctor</option>
+            {% for d in doct %}
+            <option value="{{d.dept}}">{{d.dept}}</option>
+            
+            {% endfor %}
+          </select>
+          </div>
+     
+      <div class="form-group">
+        
+        <input type="number" class="form-control" id="number" name="number" placeholder="Phone Number" Required >
+        
+      </div>
+      <br>
+      <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-success btn-sm btn-block">Book</button>
+      </div>
+
+
+</form>
+</div>
+
+
+
+
+
+</div>
+</div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+{% endblock body %}

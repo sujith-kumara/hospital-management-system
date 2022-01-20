@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block css %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    {% endblock css %}
+
+{% block title %}
+Signup
+{% endblock title %}
+{% block body %}
+<div class="container mt-3">
+<!-- div.row -->
+<div class="row">
+
+<!-- each row will have 12 columns and now we divide the columns -->
+<!-- div.col-md-4*3 -->
+<div class="col-md-4"></div>
+<div class="col-md-4 jumbotron">
+    <h4 class="text-center bg-info text-white">Sign Up Here</h4>
+    <br>
+    {% with messages=get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+
+    
+    
+    <div class="alert alert-{{category}} alert-dismissible  show"
+    role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        
+       
+    
+      </button>
+    
+    </div>
+    
+    
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+
+    <form action="/signup" method="POST">
+        <div class="mb-3">
+            <label for="username" class="username">Username</label>
+            <input type="text" class="form-control" id="username" name="username" Required >
+            
+          </div>
+
+
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email Address</label>
+          <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" Required>
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+          <label for="passsword" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password"Required>
+        </div>
+        
+        <button type="submit" class="btn btn-info btn-sm btn-block">Signup</button>
+      </form>
+      <br>
+      Already a User <a href="/login">Login</a>
+</div>
+<div class="col-md-4"></div>
+
+
+
+
+</div>
+
+</div>
+</div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+{% endblock body %}

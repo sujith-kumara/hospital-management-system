@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block css %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    {% endblock css %}
+{% block title %}
+DOCTORS
+{% endblock title %}
+{% block body %}
+<div class="container">
+<div class="row">
+<div class="col-md-4"></div>
+<div class="col-md-4">
+    <br>
+    <br>
+    <h2 class="text-center text-white bg-primary ">Doctors Booking</h2>
+    {% with messages=get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+
+    
+    
+    <div class="alert alert-{{category}} alert-dismissible  show"
+    role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        
+       
+    
+      </button>
+    
+    </div>
+    
+    
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <form action="/doctors" method="post" class="jumbotron">
+       
+         
+          <div class="form-group">
+            
+            <input type="text" class="form-control" id="doctorname" name="doctorname" placeholder="Doctor Name" Required >
+            
+          </div>
+          <br>
+          <div class="form-group">
+            
+            <input type="email" class="form-control" id="email" name="email" value={{current_user.email}} placeholder="Email" Required >
+            
+          </div>
+          <br>
+          <div class="form-group">
+            
+            <input type="text" class="form-control" id="dept" name="dept" placeholder="Department" Required >
+            
+          </div>
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-success btn-sm btn-block">Book</button>
+            </div>
+        </form>
+</div>
+<div class="col-md-4"></div>
+</div>
+</div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+{% endblock body %}
