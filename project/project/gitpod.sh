@@ -1,7 +1,7 @@
 #!/bin/bash
 pip install -q -r requirements.txt
 pip -q install pymysql flask  flask_sqlalchemy flask_login PyPDF2==2.4.0 flask_mail
-
+apt update -y
 
 apt install mysql-server -y > /dev/null
 echo -e "[mysql]\nuser = root\npassword = root" > ~/.my.cnf

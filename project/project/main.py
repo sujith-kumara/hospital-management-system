@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user,logout_user,LoginManager,login_manager
 from flask_login import login_required,current_user
 from flask_mail import Mail
+from sqlalchemy import text
 import json
 
 with open('config.json','r') as c:
@@ -98,14 +99,14 @@ def doctors():
         dept=request.form.get('dept')
         
 
-        query=db.engine.execute(F"INSERT INTO `doctors` (`email`,`doctorname`,`dept`) VALUES ('{email}','{doctorname}','{dept}')")
+        query=db.session.execute(text("INSERT INTO `doctors` (`email`,`doctorname`,`dept`) VALUES ('{email}','{doctorname}','{dept}')"))
         flash("Information is Stored","primary")
     return render_template('doctor.html')
 
 @app.route("/patients",methods=['POST','GET'])
 @login_required
 def patients():
-    doct=db.engine.execute("SELECT * FROM `doctors`")
+    doct=db.session.execute(text("SELECT * FROM `doctors`"))
     if request.method=="POST":
         email=request.form.get('email')
         name=request.form.get('name')
@@ -118,7 +119,7 @@ def patients():
         number=request.form.get('number')
         subject='HOSPITAL MANAGEMENT SYSTEM'
 
-        query=db.engine.execute(F"INSERT INTO `patients` (`email`,`name`,`gender`,`slot`,`disease`,`time`,`date`,`dept`,`number`) VALUES ('{email}','{name}','{gender}','{slot}','{disease}','{time}','{date}','{dept}','{number}')")
+        query=db.session.execute(text("INSERT INTO `patients` (`email`,`name`,`gender`,`slot`,`disease`,`time`,`date`,`dept`,`number`) VALUES ('{email}','{name}','{gender}','{slot}','{disease}','{time}','{date}','{dept}','{number}')"))
         mail.send_message(subject,sender=params['gmail-user'],recipients=[email],body="YOUR BOOKING IS CONFIRMED THANKS FOR CHOOSING US")
         
         
@@ -135,7 +136,7 @@ def patients():
 @login_required
 def bookings():
     email=current_user.email
-    query=db.engine.execute(f"SELECT * FROM `patients` WHERE email='{email}'")
+    query=db.session.execute(text("SELECT * FROM `patients` WHERE email='{email}'"))
     return render_template('bookings.html',query=query)
 
 @app.route("/edit/<string:pid>",methods=['POST','GET'])
@@ -152,7 +153,7 @@ def edit(pid):
         date=request.form.get('date')
         dept=request.form.get('dept')
         number=request.form.get('number')
-        db.engine.execute(f"UPDATE `patients` SET `email` = '{email}', `name` = '{name}', `gender` = '{gender}', `slot` = '{slot}', `disease` = '{disease}', `time` = '{time}', `date` = '{date}', `dept` = '{dept}', `number` = '{number}' WHERE `patients`.`pid` = {pid}")
+        db.session.execute(text("UPDATE `patients` SET `email` = '{email}', `name` = '{name}', `gender` = '{gender}', `slot` = '{slot}', `disease` = '{disease}', `time` = '{time}', `date` = '{date}', `dept` = '{dept}', `number` = '{number}' WHERE `patients`.`pid` = {pid}"))
         flash("Data update is successful","success")
         return redirect('/bookings')
 
@@ -162,7 +163,7 @@ def edit(pid):
 @app.route("/delete/<string:pid>",methods=['POST','GET'])
 @login_required
 def delete(pid):
-    db.engine.execute(f"DELETE FROM `patients` WHERE `patients`.`pid`={pid}")
+    db.session.execute(text("DELETE FROM `patients` WHERE `patients`.`pid`={pid}"))
     flash("Slot Deleted Successfully","danger")
     return redirect('/bookings')
 
@@ -179,7 +180,7 @@ def signup():
              return render_template("/signup.html")
          encpassword=generate_password_hash(password)
         #this is the first method to save the data into the database
-        # new_user=db.engine.execute(f"INSERT INTO `user`(`username`,`email`,`password`)VALUES ('{username}','{email}','{encpassword}' );" )
+        # new_user=db.session.execute(text("INSERT INTO `user`(`username`,`email`,`password`)VALUES ('{username}','{email}','{encpassword}' );" ))
          newuser=User(username=username,email=email,password=encpassword)
          db.session.add(newuser)
          db.session.commit()
