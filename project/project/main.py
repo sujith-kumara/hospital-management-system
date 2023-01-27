@@ -37,10 +37,13 @@ def load_user(user_id):
 
 #app.config['SQLALCHEMY_DATABASE_URL']='mysql://username:password@localhost/database_table_name'
 #app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:@localhost/hms'
-app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:@localhost/hms?unix_socket=/opt/lampp/var/mysql/mysql.sock'
-db=SQLAlchemy(app)
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@localhost/hms"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+import pymysql
 
+pymysql.install_as_MySQLdb()
 
+db = SQLAlchemy(app)
 
 # here we create db models that is tables
 class Test(db.Model):
